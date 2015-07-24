@@ -109,9 +109,10 @@ textureCue = [1 2];
 % Draw text in the middle of the screen in Courier in white
 Screen('TextSize', window, 80);
 Screen('TextFont', window, 'Courier');
-DrawFormattedText(window, 'The Experiment will begin now', 'center', 'center', white);
-
-WaitSecs(3);
+DrawFormattedText(window, 'The Experiment will begin now, press any key to start', 'center', 'center', white);
+% Flip to the screen
+Screen('Flip', window);
+Kb
 
 
 
@@ -126,7 +127,7 @@ for i = 1:nBlocks
     Screen('Flip', window);
     
     % Wait for two seconds
-    WaitSecs(2);
+    WaitSecs(restTime);
     
     
     % next do a stim block
@@ -142,7 +143,7 @@ for i = 1:nBlocks
     orient =1;
     allCoords = allCoords1;
     t_flip(count) = toc;
-    while toc < restTime
+    while toc < stimTime
         
         % Increment the counter
         frameCounter = frameCounter + 1;
@@ -191,9 +192,18 @@ end
 
 % display an end screen
 
+% Display an intro screen
+
+% Draw text in the middle of the screen in Courier in white
+Screen('TextSize', window, 80);
+Screen('TextFont', window, 'Courier');
+DrawFormattedText(window, 'Game Over!', 'center', 'center', white);
+% Flip to the screen
+Screen('Flip', window);
+pause(3);
 
 
 % Clear up and leave the building
 sca;
 close all;
-%clear all;
+clear all;

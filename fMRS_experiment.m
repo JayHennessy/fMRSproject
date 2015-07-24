@@ -109,12 +109,12 @@ textureCue = [1 2];
 % Draw text in the middle of the screen in Courier in white
 Screen('TextSize', window, 80);
 Screen('TextFont', window, 'Courier');
-DrawFormattedText(window, 'The Experiment will begin now', 'center', 'center', white);
+DrawFormattedText(window, 'The Experiment will begin now, press any key to start', 'center', 'center', white);
 % Flip to the screen
 Screen('Flip', window);
-pause(3);
+KbStrokeWait;
 
-
+HideCursor;
 
 for i = 1:nBlocks
     
@@ -145,6 +145,11 @@ for i = 1:nBlocks
     t_flip(count) = toc;
     while toc < stimTime
         
+        % check for key being pressed to exit.
+        if KbCheck
+            ShowCursor;
+            sca;
+        end
         % Increment the counter
         frameCounter = frameCounter + 1;
         
@@ -178,21 +183,27 @@ for i = 1:nBlocks
             end
             
             textureCue = fliplr(textureCue);
-            frameCounter = 0;
-            
-            
+            frameCounter = 0;          
         end
-        
-        
+       
     end
-    
-    
-    
+  
 end
 
-% display an end screen
+% final rest
 
-% Display an intro screen
+% begin with rest block
+
+% Now fill the screen green
+Screen('FillRect', window, grey);
+
+% Flip to the screen
+Screen('Flip', window);
+
+% Wait for two seconds
+WaitSecs(restTime);
+
+% display an end screen
 
 % Draw text in the middle of the screen in Courier in white
 Screen('TextSize', window, 80);
@@ -200,8 +211,8 @@ Screen('TextFont', window, 'Courier');
 DrawFormattedText(window, 'Game Over!', 'center', 'center', white);
 % Flip to the screen
 Screen('Flip', window);
-pause(3);
-
+KbStrokeWait;
+ShowCursor;
 
 % Clear up and leave the building
 sca;
