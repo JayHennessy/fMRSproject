@@ -8,6 +8,7 @@ sca;
 nBlocks = 2; % number of stim + rest blocks
 stimTime = 5; % time in seconds
 restTime = 5; % time of rest block in seconds
+finalRestTime = 2; % length of last rest block in seconds
 
 %  ** ***** I ADDED THIS WHICH MAKES THE TIMING VERY INACCURATE  ****
 Screen('Preference', 'SkipSyncTests', 1);
@@ -112,9 +113,9 @@ Screen('TextFont', window, 'Courier');
 DrawFormattedText(window, 'The Experiment will begin now, press any key to start', 'center', 'center', white);
 % Flip to the screen
 Screen('Flip', window);
-Kb
+KbStrokeWait;
 
-
+HideCursor;
 
 for i = 1:nBlocks
     
@@ -126,14 +127,21 @@ for i = 1:nBlocks
     % Flip to the screen
     Screen('Flip', window);
     
-    % Wait for two seconds
-    WaitSecs(restTime);
+    % Wait for rest time
+    for j = 1:restTime
+        WaitSecs(1);
+        if KbCheck
+            ShowCursor;
+            sca;
+           return;
+        end
+    end
     
     
     % next do a stim block
     
-    Screen('DrawLines', window, allCoords1,...
-        lineWidthPix, [1,0,0], [xCenter yCenter], 2);
+     Screen('DrawLines', window, allCoords1,...
+         lineWidthPix, [1,0,0], [xCenter yCenter], 2);
     
     % Sync us to the vertical retrace
     vbl = Screen('Flip', window);
@@ -145,6 +153,11 @@ for i = 1:nBlocks
     t_flip(count) = toc;
     while toc < stimTime
         
+        % check for key being pressed to exit.
+        if KbCheck
+            ShowCursor;
+            sca;
+        end
         % Increment the counter
         frameCounter = frameCounter + 1;
         
@@ -178,21 +191,34 @@ for i = 1:nBlocks
             end
             
             textureCue = fliplr(textureCue);
-            frameCounter = 0;
-            
-            
+            frameCounter = 0;          
         end
-        
-        
+       
     end
-    
-    
-    
+  
+end
+
+% final rest
+
+% begin with rest block
+
+% Now fill the screen green
+Screen('FillRect', window, grey);
+
+% Flip to the screen
+Screen('Flip', window);
+
+% Wait for two seconds
+for j = 1:finalRestTime
+    WaitSecs(1);
+    if KbCheck
+        ShowCursor;
+        sca;
+        return;
+    end
 end
 
 % display an end screen
-
-% Display an intro screen
 
 % Draw text in the middle of the screen in Courier in white
 Screen('TextSize', window, 80);
@@ -200,8 +226,8 @@ Screen('TextFont', window, 'Courier');
 DrawFormattedText(window, 'Game Over!', 'center', 'center', white);
 % Flip to the screen
 Screen('Flip', window);
-pause(3);
-
+KbStrokeWait;
+ShowCursor;
 
 % Clear up and leave the building
 sca;

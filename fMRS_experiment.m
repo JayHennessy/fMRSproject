@@ -8,6 +8,7 @@ sca;
 nBlocks = 2; % number of stim + rest blocks
 stimTime = 5; % time in seconds
 restTime = 5; % time of rest block in seconds
+finalRestTime = 2; % length of last rest block in seconds
 
 %  ** ***** I ADDED THIS WHICH MAKES THE TIMING VERY INACCURATE  ****
 Screen('Preference', 'SkipSyncTests', 1);
@@ -126,14 +127,21 @@ for i = 1:nBlocks
     % Flip to the screen
     Screen('Flip', window);
     
-    % Wait for two seconds
-    WaitSecs(restTime);
+    % Wait for rest time
+    for j = 1:restTime
+        WaitSecs(1);
+        if KbCheck
+            ShowCursor;
+            sca;
+           return;
+        end
+    end
     
     
     % next do a stim block
     
-    Screen('DrawLines', window, allCoords1,...
-        lineWidthPix, [1,0,0], [xCenter yCenter], 2);
+     Screen('DrawLines', window, allCoords1,...
+         lineWidthPix, [1,0,0], [xCenter yCenter], 2);
     
     % Sync us to the vertical retrace
     vbl = Screen('Flip', window);
@@ -201,7 +209,14 @@ Screen('FillRect', window, grey);
 Screen('Flip', window);
 
 % Wait for two seconds
-WaitSecs(restTime);
+for j = 1:finalRestTime
+    WaitSecs(1);
+    if KbCheck
+        ShowCursor;
+        sca;
+        return;
+    end
+end
 
 % display an end screen
 
