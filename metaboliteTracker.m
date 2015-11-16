@@ -30,8 +30,8 @@ if type ==0
     end
     metVecAvg = movingAverage(metVec,kernel);
     
-    highAmp = mean(real(metVecAvg(5:end-5)))+ std(real(metVecAvg));
-    lowAmp = mean(real(metVecAvg(5:end-5)))- std(real(metVecAvg));
+    highAmp = mean(real(metVecAvg(5:end-5)))+ std(real(metVecAvg(5:end-5)));
+    lowAmp = mean(real(metVecAvg(5:end-5)))- std(real(metVecAvg(5:end-5)));
     
     blockDesign = blockDesign.*highAmp;
     % I don't understand why the following line doesn't work. I just
@@ -46,14 +46,14 @@ if type ==0
         end
     end
     
-    
     figure;
-    plot(0:(scanTime/data.sz(2)):(scanTime-scanTime/data.sz(2)), metVec);
+    plot(0:(scanTime/data.sz(2)):(scanTime-scanTime/data.sz(2)), metVec, 0:(scanTime/data.sz(2)):(scanTime-scanTime/data.sz(2)) , blockDesign);
+    
     title('Fixed Point ')
     xlabel('Time (min)')
 
     figure;
-    plot(0:(scanTime/data.sz(2)):(scanTime-((kernel+1)*scanTime)/data.sz(2)) , real(metVecAvg((kernel/2):end-((kernel/2)+1))) , [0:(scanTime/data.sz(2)):(scanTime-((kernel+1)*scanTime)/data.sz(2))] , blockDesign((kernel/2):end-((kernel/2)+1)));
+    plot(0:(scanTime/data.sz(2)):(scanTime-((kernel+1)*scanTime)/data.sz(2)) , real(metVecAvg((kernel/2):end-((kernel/2)+1))), 0:(scanTime/data.sz(2)):(scanTime-((kernel+1)*scanTime)/data.sz(2)) , blockDesign((kernel/2):end-((kernel/2)+1)));
     title('Averaged Point ')
     xlabel('Time (min)')
 
