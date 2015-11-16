@@ -199,6 +199,7 @@ fid=fopen([filestring '/readme.txt'],'w+');
 fprintf(fid,'Original number of averages: \t%5.6f',out_raw.sz(out_raw.dims.averages)*2);
 disp(['Original number of averages:  ' num2str(out_raw.sz(out_raw.dims.averages)*2)]);
 fprintf(fid,'\nNumber of bad Averages removed:  \t%5.6f',nBadAvgTotal);
+disp('*****###### Ask why this is twice as big as it should be ?????  ####*****');
 disp(['Number of bad averages removed:  ' num2str(nBadAvgTotal)]);
 fprintf(fid,'\nNumber of remaining averages in processed dataset:  \t%5.6f',out_rm.sz(out_rm.dims.averages)*2);
 disp(['Number of remaining averages in processed dataset:  ' num2str(out_rm.sz(out_rm.dims.averages)*2)]);
